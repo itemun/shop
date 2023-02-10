@@ -10,16 +10,15 @@ func main() {
 	err := shop.Buy("2")
 
 	if err != nil {
-		fmt.Println(err.Error()) // Зачем .Error()?
+		fmt.Println(err.Error())
 	}
 	for id, product := range shop.Products {
 		fmt.Printf("%s: %v\n", id, product)
 	}
 }
 
-//Questions for Kostya:
-//13 строка main
-//Как пользуешься гитом в Голэнд?
+// Questions for Kostya:
+// 30th line - in_memory.go
 
 //TODO
 // Implement methods Sell & Buy

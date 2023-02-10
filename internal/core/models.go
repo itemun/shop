@@ -34,7 +34,7 @@ func NewShop() *Shop {
 func (s *Shop) Sell(id string) error {
 	product, ok := s.Products[id]
 	if !ok || product.Quantity == 0 {
-		return errProductNotFound
+		return ErrProductNotFound
 	}
 	product.Quantity--
 	return nil
@@ -43,7 +43,7 @@ func (s *Shop) Sell(id string) error {
 func (s *Shop) Buy(id string) error {
 	product, ok := s.Products[id]
 	if !ok || product.Quantity == 0 {
-		return errProductNotFound
+		return ErrProductNotFound
 	}
 	product.Quantity++
 	return nil

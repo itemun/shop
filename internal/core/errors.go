@@ -3,5 +3,6 @@ package core
 import "errors"
 
 var (
-	errProductNotFound = errors.New("product id not found")
+	ErrProductNotFound = errors.New("product id not found")
+	ErrProductExists   = errors.New("product already exists")
 )
