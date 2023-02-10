@@ -1,9 +1,5 @@
 package core
 
-import (
-	"fmt"
-)
-
 type Product struct {
 	Name     string
 	Price    int
@@ -11,12 +7,12 @@ type Product struct {
 }
 
 type Shop struct {
-	Products map[string]Product
+	Products map[string]*Product
 }
 
 func NewShop() *Shop {
 	return &Shop{
-		Products: map[string]Product{
+		Products: map[string]*Product{
 			"1": {
 				Name:     "Phone",
 				Price:    50000,
@@ -36,24 +32,19 @@ func NewShop() *Shop {
 }
 
 func (s *Shop) Sell(id string) error {
-	if product, ok := s.Products[id]; ok {
-		if product.Quantity == 0 {
-			return errProductNotFound
-		}
-		product.Quantity-- //меняет количество товара у копии, а не у оригинала
-		//s.Products[id].Quantity-- // не работает
-		fmt.Println(product.Name, product.Quantity)
-	} else {
+	product, ok := s.Products[id]
+	if !ok || product.Quantity == 0 {
 		return errProductNotFound
 	}
+	product.Quantity--
 	return nil
 }
 
 func (s *Shop) Buy(id string) error {
-	if product, ok := s.Products[id]; ok {
-		product.Quantity++
-	} else {
+	product, ok := s.Products[id]
+	if !ok || product.Quantity == 0 {
 		return errProductNotFound
 	}
+	product.Quantity++
 	return nil
 }
