@@ -1,26 +1,59 @@
 package core
 
-import "errors"
+import (
+	"fmt"
+)
+
+type Product struct {
+	Name     string
+	Price    int
+	Quantity int
+}
 
 type Shop struct {
-	ProductCount int
+	Products map[string]Product
 }
 
-func newShop() *Shop {
+func NewShop() *Shop {
 	return &Shop{
-		ProductCount: 100,
-	}
+		Products: map[string]Product{
+			"1": {
+				Name:     "Phone",
+				Price:    50000,
+				Quantity: 100,
+			},
+			"2": {
+				Name:     "TV",
+				Price:    100000,
+				Quantity: 50,
+			},
+			"3": {
+				Name:     "Notebook",
+				Price:    150000,
+				Quantity: 30,
+			},
+		}}
 }
 
-func (s *Shop) sell() (int, error) {
-	if s.ProductCount == 0 {
-		return 0, errors.New("no product in the shop")
+func (s *Shop) Sell(id string) error {
+	if product, ok := s.Products[id]; ok {
+		if product.Quantity == 0 {
+			return errProductNotFound
+		}
+		product.Quantity-- //меняет количество товара у копии, а не у оригинала
+		//s.Products[id].Quantity-- // не работает
+		fmt.Println(product.Name, product.Quantity)
+	} else {
+		return errProductNotFound
 	}
-	s.ProductCount--
-	return s.ProductCount, nil
+	return nil
 }
 
-func (s *Shop) buy() int {
-	s.ProductCount++
-	return s.ProductCount
+func (s *Shop) Buy(id string) error {
+	if product, ok := s.Products[id]; ok {
+		product.Quantity++
+	} else {
+		return errProductNotFound
+	}
+	return nil
 }
